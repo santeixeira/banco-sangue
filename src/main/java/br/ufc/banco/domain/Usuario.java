@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 public class Usuario {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+  private Long usuarioId;
   private String email;
   private String senha;
   private LocalDateTime criacao;
@@ -20,8 +20,8 @@ public class Usuario {
 
   public Usuario () {}
 
-  public Usuario(Long userId, String email, String senha, LocalDateTime criacao, LocalDateTime ultimoAcesso, Cargos cargos) {
-    this.userId = userId;
+  public Usuario(Long usuarioId, String email, String senha, LocalDateTime criacao, LocalDateTime ultimoAcesso, Cargos cargos) {
+    this.usuarioId = usuarioId;
     this.email = email;
     this.senha = senha;
     this.criacao = criacao;
@@ -30,11 +30,11 @@ public class Usuario {
   }
 
   public Long getUserId() {
-    return userId;
+    return usuarioId;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
+  public void setUserId(Long usuarioId) {
+    this.usuarioId = usuarioId;
   }
 
   public String getEmail() {
@@ -81,11 +81,11 @@ public class Usuario {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Usuario usuario)) return false;
-    return Objects.equals(userId, usuario.userId) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(criacao, usuario.criacao) && Objects.equals(ultimoAcesso, usuario.ultimoAcesso) && cargos == usuario.cargos;
+    return Objects.equals(usuarioId, usuario.usuarioId) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(criacao, usuario.criacao) && Objects.equals(ultimoAcesso, usuario.ultimoAcesso) && cargos == usuario.cargos;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, email, senha, criacao, ultimoAcesso, cargos);
+    return Objects.hash(usuarioId, email, senha, criacao, ultimoAcesso, cargos);
   }
 }

@@ -20,6 +20,7 @@ public class Pessoa {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "enderecoId", referencedColumnName = "enderecoId")
     private Endereco endereco;
+
     public Pessoa() {
     }
 
@@ -39,6 +40,14 @@ public class Pessoa {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public TipoSangue getTipoSangue() {
+        return tipoSangue;
+    }
+
+    public void setTipoSangue(TipoSangue tipoSangue) {
+        this.tipoSangue = tipoSangue;
     }
 
     public String getCpf() {
@@ -91,6 +100,6 @@ public class Pessoa {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(),getNome(), getCpf(), getTelefone(), getDataNascimento(), getNaturalidade(), getEndereco());
+        return Objects.hash(super.hashCode(), getNome(), getCpf(), getTelefone(), getDataNascimento(), getNaturalidade(), getEndereco());
     }
 }
