@@ -5,5 +5,4 @@ import br.ufc.banco.domain.enumareted.TipoSangue;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
-    Estoque findByTipoSangue(TipoSangue tipoSangue);
 }

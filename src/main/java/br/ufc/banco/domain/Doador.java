@@ -14,11 +14,11 @@ public class Doador extends Pessoa {
     private Long doadorId;
     private LocalDateTime ultimaDoacao;
 
-    private Doador() {}
+    private Doador() {
+    }
 
-    public Doador(String nome, TipoSangue tipoSangue, String cpf, String telefone, LocalDateTime dataNascimento, UF naturalidade, Endereco endereco, Long doadorId, LocalDateTime ultimaDoacao) {
+    public Doador(String nome, TipoSangue tipoSangue, String cpf, String telefone, LocalDateTime dataNascimento, UF naturalidade, Endereco endereco, LocalDateTime ultimaDoacao) {
         super(nome, tipoSangue, cpf, telefone, dataNascimento, naturalidade, endereco);
-        this.doadorId = doadorId;
         this.ultimaDoacao = ultimaDoacao;
     }
 

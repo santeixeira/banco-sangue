@@ -1,27 +1,29 @@
 package br.ufc.banco.domain;
 
-import br.ufc.banco.domain.enumareted.TipoSangue;
-import br.ufc.banco.domain.enumareted.UF;
 import jakarta.persistence.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name="GESTOR")
-public class Gestor extends Funcionario {
+public class Gestor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gestorId;
+
+    @OneToOne
+    @JoinColumn(name = "funcionarioId", referencedColumnName = "funcionarioId")
+    private Funcionario funcionario;
+
+    @OneToOne
+    @JoinColumn(name = "bancoId", referencedColumnName = "bancoId")
     private Banco banco;
 
     public Gestor() {
     }
 
-    public Gestor(String nome, TipoSangue tipoSangue, String cpf, String telefone, LocalDateTime dataNascimento, UF naturalidade, Endereco endereco, Long funcionarioId, BigDecimal salario, String setor, LocalDateTime dataAdmissao, Usuario usuario, Long gestorId) {
-        super(nome, tipoSangue, cpf, telefone, dataNascimento, naturalidade, endereco, funcionarioId, salario, setor, dataAdmissao, usuario);
-        this.gestorId = gestorId;
+    public Gestor(Funcionario funcionario, Banco banco) {
+        this.funcionario = funcionario;
+        this.banco = banco;
     }
 
     public Long getGestorId() {
@@ -30,6 +32,14 @@ public class Gestor extends Funcionario {
 
     public void setGestorId(Long gestorId) {
         this.gestorId = gestorId;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 
     public Banco getBanco() {
@@ -45,11 +55,11 @@ public class Gestor extends Funcionario {
         if (this == o) return true;
         if (!(o instanceof Gestor gestor)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(getGestorId(), gestor.getGestorId()) && Objects.equals(getBanco(), gestor.getBanco());
+        return Objects.equals(getBanco(), gestor.getBanco());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getGestorId(), getBanco());
+        return Objects.hash(super.hashCode(), getBanco());
     }
 }

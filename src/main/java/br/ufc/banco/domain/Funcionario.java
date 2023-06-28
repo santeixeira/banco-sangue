@@ -1,6 +1,5 @@
 package br.ufc.banco.domain;
 
-import br.ufc.banco.domain.enumareted.Cargos;
 import br.ufc.banco.domain.enumareted.TipoSangue;
 import br.ufc.banco.domain.enumareted.UF;
 import jakarta.persistence.*;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Funcionario extends Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +23,8 @@ public class Funcionario extends Pessoa {
     public Funcionario() {
     }
 
-    public Funcionario(String nome, TipoSangue tipoSangue, String cpf, String telefone, LocalDateTime dataNascimento, UF naturalidade, Endereco endereco, Long funcionarioId, BigDecimal salario, String setor, LocalDateTime dataAdmissao, Usuario usuario) {
+    public Funcionario(String nome, TipoSangue tipoSangue, String cpf, String telefone, LocalDateTime dataNascimento, UF naturalidade, Endereco endereco, BigDecimal salario, String setor, LocalDateTime dataAdmissao, Usuario usuario) {
         super(nome, tipoSangue, cpf, telefone, dataNascimento, naturalidade, endereco);
-        this.funcionarioId = funcionarioId;
         this.salario = salario;
         this.setor = setor;
         this.dataAdmissao = dataAdmissao;

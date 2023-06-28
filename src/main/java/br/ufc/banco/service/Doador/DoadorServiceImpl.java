@@ -37,7 +37,6 @@ public class DoadorServiceImpl implements DoadorService {
                 pessoaDTO.dataNascimento(),
                 pessoaDTO.naturalidade(),
                 pessoaDTO.endereco(),
-                null,
                 LocalDateTime.now()
         );
         return doadorRepository.save(doador);

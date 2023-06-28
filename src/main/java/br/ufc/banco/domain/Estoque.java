@@ -5,44 +5,88 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Estoque {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long estoqueId;
-  private Integer quantidade;
-  private TipoSangue tipoSangue;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long estoqueId;
+    @Column(name = "QUANTIDADE_A")
+    private Integer quantidadeA;
+    @Column(name = "QUANTIDADE_B")
+    private Integer quantidadeB;
+    @Column(name = "QUANTIDADE_O")
+    private Integer quantidadeO;
+    @Column(name = "QUANTIDADE_AB")
+    private Integer quantidadeAB;
 
-  public Estoque() {}
 
-  public Estoque(Long estoqueId, Integer quantidade, TipoSangue tipoSangue) {
-    this.estoqueId = estoqueId;
-    this.quantidade = quantidade;
-    this.tipoSangue = tipoSangue;
-  }
 
-  public Long getEstoqueId() {
-    return estoqueId;
-  }
+    public Estoque() {
+    }
 
-  public void setEstoqueId(Long estoqueId) {
-    this.estoqueId = estoqueId;
-  }
+    public Estoque(Integer quantidadeA, Integer quantidadeB, Integer quantidadeO, Integer quantidadeAB) {
+        this.quantidadeA = quantidadeA;
+        this.quantidadeB = quantidadeB;
+        this.quantidadeO = quantidadeO;
+        this.quantidadeAB = quantidadeAB;
+    }
 
-  public Integer getQuantidade() {
-    return quantidade;
-  }
+    public Long getEstoqueId() {
+        return estoqueId;
+    }
 
-  public void setQuantidade(Integer quantidade) {
-    this.quantidade = quantidade;
-  }
+    public void setEstoqueId(Long estoqueId) {
+        this.estoqueId = estoqueId;
+    }
 
-  public TipoSangue getTipoSangue() {
-    return tipoSangue;
-  }
+    public Integer getQuantidadeA() {
+        return quantidadeA;
+    }
 
-  public void setTipoSangue(TipoSangue tipoSangue) {
-    this.tipoSangue = tipoSangue;
-  }
+    public void setQuantidadeA(Integer quantidadeA) {
+        this.quantidadeA = quantidadeA;
+    }
 
+    public Integer getQuantidadeB() {
+        return quantidadeB;
+    }
+
+    public void setQuantidadeB(Integer quantidadeB) {
+        this.quantidadeB = quantidadeB;
+    }
+
+    public Integer getQuantidadeO() {
+        return quantidadeO;
+    }
+
+    public void setQuantidadeO(Integer quantidadeO) {
+        this.quantidadeO = quantidadeO;
+    }
+
+    public Integer getQuantidadeAB() {
+        return quantidadeAB;
+    }
+
+    public void setQuantidadeAB(Integer quantidadeAB) {
+        this.quantidadeAB = quantidadeAB;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Estoque estoque)) return false;
+        return Objects.equals(getEstoqueId(),
+                estoque.getEstoqueId()) && Objects.equals(getQuantidadeA(),
+                estoque.getQuantidadeA()) && Objects.equals(getQuantidadeB(),
+                estoque.getQuantidadeB()) && Objects.equals(getQuantidadeO(),
+                estoque.getQuantidadeO()) && Objects.equals(getQuantidadeAB(),
+                estoque.getQuantidadeAB());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEstoqueId(), getQuantidadeA(), getQuantidadeB(), getQuantidadeO(), getQuantidadeAB());
+    }
 }
