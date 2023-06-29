@@ -2,10 +2,7 @@ package br.ufc.banco.controller;
 
 import br.ufc.banco.domain.Banco;
 import br.ufc.banco.domain.Solicitacao;
-import br.ufc.banco.service.Banco.BancoDTO;
-import br.ufc.banco.service.Banco.BancoService;
-import br.ufc.banco.service.Banco.EnvioSolicitacaoDTO;
-import br.ufc.banco.service.Banco.SolicitacaoDTO;
+import br.ufc.banco.service.Banco.*;
 import br.ufc.banco.util.Utilitarios;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -40,9 +37,9 @@ public class BancoController extends Utilitarios {
 
   @PutMapping("/banco/editar/{bancoId}")
   @Transactional
-  public ResponseEntity<Banco> editarBanco(@RequestBody @Valid BancoDTO bancoDTO,
+  public ResponseEntity<Banco> editarBanco(@RequestBody @Valid BancoUpdateDTO BancoUpdateDTO,
                                            @PathVariable Long bancoId) {
-    Banco data = bancoService.editarBanco(bancoDTO, bancoId);
+    Banco data = bancoService.editarBanco(BancoUpdateDTO, bancoId);
     return ResponseEntity.ok().body(data);
   }
 

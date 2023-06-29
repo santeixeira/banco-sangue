@@ -15,8 +15,7 @@ public class Doacao {
 
     public Doacao () {}
 
-    public Doacao(Long doacaoId, Integer quantidade, Doador doador) {
-        this.doacaoId = doacaoId;
+    public Doacao(Integer quantidade, Doador doador) {
         this.quantidade = quantidade;
         this.doador = doador;
     }

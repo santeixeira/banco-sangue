@@ -10,7 +10,7 @@ public interface BancoService {
 
     Banco adicionarBanco(BancoDTO bancoDTO);
 
-    Banco editarBanco(BancoDTO bancoDTO, Long bancoId);
+    Banco editarBanco(BancoUpdateDTO bancoUpdateDTO, Long bancoId);
 
     void excluirBanco(Long bancoId);
 

@@ -50,13 +50,10 @@ public class BancoServiceImpl implements BancoService {
   }
 
   @Override
-  public Banco editarBanco(BancoDTO bancoDTO, Long bancoId) {
-    Banco banco = bancoRepository.findById(bancoId).orElseThrow(
-        () -> new NoSuchElementException("Banco nao encontrado")
-    );
-    banco.setNomeFantasia(bancoDTO.nomeFantasia());
-    banco.setEndereco(bancoDTO.endereco());
-    banco.setEstoque(bancoDTO.estoque());
+  public Banco editarBanco(BancoUpdateDTO bancoUpdateDTO, Long bancoId) {
+    Banco banco = encontrarBanco(bancoId);
+    banco.setNomeFantasia(bancoUpdateDTO.nomeFantasia());
+    banco.setEndereco(bancoUpdateDTO.endereco());
     return bancoRepository.save(banco);
   }
 
@@ -74,26 +71,21 @@ public class BancoServiceImpl implements BancoService {
 
   @Override
   public void abrirSolicitacao(SolicitacaoDTO solicitacaoDTO) {
-    Banco banco = bancoRepository.findById(solicitacaoDTO.bancoId()).orElseThrow(
-        () -> new NoSuchElementException("Banco inválido.")
-    );
     Solicitacao solicitacao = new Solicitacao(solicitacaoDTO.quantidade(),
         solicitacaoDTO.tipoSangue(),
         LocalDateTime.now(),
         null,
         Status.Pendente,
-        banco);
+        solicitacaoDTO.bancoId());
     solicitacaoRepository.save(solicitacao);
   }
 
   @Override
   public void enviarSolicitacao(EnvioSolicitacaoDTO envioSolicitacaoDTO) {
-    Solicitacao solicitacao = solicitacaoRepository.findById(envioSolicitacaoDTO.bancoReceberId()).orElseThrow(
-        () -> new NoSuchElementException("Banco inválido.")
-    );
-    if (solicitacao.getStatus().equals(Status.Pendente) &&
-        !envioSolicitacaoDTO.bancoEnviarId()
-            .equals(solicitacao.getBanco().getBancoId())) {
+    Banco banco = encontrarBanco(envioSolicitacaoDTO.bancoReceberId());
+    Solicitacao solicitacao = solicitacaoRepository
+        .findByStatusAndBancoId(Status.Pendente, envioSolicitacaoDTO.bancoReceberId());
+    if (!envioSolicitacaoDTO.bancoEnviarId().equals(banco.getBancoId())) {
       solicitacao.setStatus(Status.Finalizado);
       solicitacao.setDataRecebido(LocalDateTime.now());
       enviarBolsaSangue(solicitacao.getTipoSangue(),
@@ -106,29 +98,51 @@ public class BancoServiceImpl implements BancoService {
     }
   }
 
+  public Banco encontrarBanco(Long id) {
+    return bancoRepository.findById(id).orElseThrow(
+        () -> new NoSuchElementException("Banco inválido.")
+    );
+  }
+
   public void enviarBolsaSangue(TipoSangue tipoSangue,
                                 Long estoqueReceberId,
                                 Long estoqueEnviarId,
                                 Integer quantidade) {
-    Estoque estoqueReceber = estoqueRepository.findById(estoqueReceberId).orElseThrow();
-    Estoque estoqueEnviar = estoqueRepository.findById(estoqueEnviarId).orElseThrow();
+    Estoque estoqueReceber = estoqueRepository.getReferenceById(estoqueReceberId);
+    Estoque estoqueEnviar = estoqueRepository.getReferenceById(estoqueEnviarId);
     switch (tipoSangue) {
       case A -> {
-        estoqueReceber.setQuantidadeA(estoqueReceber.getQuantidadeA() + quantidade);
-        estoqueEnviar.setQuantidadeA(estoqueEnviar.getQuantidadeA() - quantidade);
+        if (estoqueEnviar.getQuantidadeA() > quantidade * 1.2) {
+          estoqueReceber.setQuantidadeA(estoqueReceber.getQuantidadeA() + quantidade);
+          estoqueEnviar.setQuantidadeA(estoqueEnviar.getQuantidadeA() - quantidade);
+        } else {
+          throw new NoSuchElementException("Quantidade insuficiente!");
+        }
       }
 
       case B -> {
-        estoqueReceber.setQuantidadeB(estoqueReceber.getQuantidadeA() + quantidade);
-        estoqueEnviar.setQuantidadeB(estoqueEnviar.getQuantidadeA() - quantidade);
+        if (estoqueEnviar.getQuantidadeB() > quantidade * 1.2) {
+          estoqueReceber.setQuantidadeB(estoqueReceber.getQuantidadeB() + quantidade);
+          estoqueEnviar.setQuantidadeB(estoqueEnviar.getQuantidadeB() - quantidade);
+        } else {
+          throw new NoSuchElementException("Quantidade insuficiente!");
+        }
       }
       case O -> {
-        estoqueReceber.setQuantidadeO(estoqueReceber.getQuantidadeA() + quantidade);
-        estoqueEnviar.setQuantidadeO(estoqueEnviar.getQuantidadeA() - quantidade);
+        if (estoqueEnviar.getQuantidadeO() > quantidade * 1.2) {
+          estoqueReceber.setQuantidadeO(estoqueReceber.getQuantidadeO() + quantidade);
+          estoqueEnviar.setQuantidadeO(estoqueEnviar.getQuantidadeO() - quantidade);
+        } else {
+          throw new NoSuchElementException("Quantidade insuficiente!");
+        }
       }
       case AB -> {
-        estoqueReceber.setQuantidadeAB(estoqueReceber.getQuantidadeA() + quantidade);
-        estoqueEnviar.setQuantidadeAB(estoqueEnviar.getQuantidadeA() - quantidade);
+        if (estoqueEnviar.getQuantidadeAB() > quantidade * 1.2) {
+          estoqueReceber.setQuantidadeAB(estoqueReceber.getQuantidadeAB() + quantidade);
+          estoqueEnviar.setQuantidadeAB(estoqueEnviar.getQuantidadeAB() - quantidade);
+        } else {
+          throw new NoSuchElementException("Quantidade insuficiente!");
+        }
       }
       default -> throw new NoSuchElementException("Tipo sanguíneo inválido.");
     }
