@@ -39,9 +39,8 @@ public class DoacaoServiceImpl implements DoacaoService {
     @Override
     public Doacao adicionarDoacao(DoacaoDTO doacaoDTO) {
         Doador doador = doadorRepository.findDoadorByCpf(doacaoDTO.cpf()).orElseThrow(() -> new NoSuchElementException("CPF não cadastrado."));
-        Banco banco = bancoRepository.findByNomeFantasia(doacaoDTO.nomeBanco());
         Doacao doacao = new Doacao(null, doacaoDTO.quantidade(), doador);
-        adicionarSangueDoado(doador.getTipoSangue(), banco.getBancoId(), doacaoDTO.quantidade());
+        adicionarSangueDoado(doador.getTipoSangue(), doacaoDTO.bancoId(), doacaoDTO.quantidade());
         return doacaoRepository.save(doacao);
     }
 
