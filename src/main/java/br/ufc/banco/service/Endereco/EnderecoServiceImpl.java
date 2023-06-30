@@ -22,7 +22,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     public Endereco cadastrarEndereco(EnderecoDTO enderecoDTO) {
-        Endereco endereco = new Endereco(null, enderecoDTO.logradouro(), enderecoDTO.numero(),
+        Endereco endereco = new Endereco(enderecoDTO.logradouro(), enderecoDTO.numero(),
                 enderecoDTO.bairro(), enderecoDTO.cidade(), enderecoDTO.uf(), enderecoDTO.cep());
         return enderecoRepository.save(endereco);
     }
